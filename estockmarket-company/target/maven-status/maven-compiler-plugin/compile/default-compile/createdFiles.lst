@@ -1,0 +1,6 @@
+com\company\estockmarketcompany\EstockmarketCompanyApplication.class
+com\company\estockmarketcompany\service\CompanyServiceImpl.class
+com\company\estockmarketcompany\controller\CompanyController.class
+com\estockmarket\company\estockmarketcompany\App.class
+com\company\estockmarketcompany\repository\CompanyRepository.class
+com\company\estockmarketcompany\service\CompanyService.class

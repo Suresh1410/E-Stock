@@ -1,0 +1,8 @@
+com\stocks\estockmarketstock\App.class
+com\stocks\estockmarketstock\EstockmarketStockApplication.class
+com\stocks\estockmarketstock\controller\StockController.class
+com\stocks\estockmarketstock\repository\StockRepository.class
+com\stocks\estockmarketstock\repository\CustomSequencesRepo.class
+com\stocks\estockmarketstock\service\StockService.class
+com\stocks\estockmarketstock\service\SrockServiceImpl.class
+com\stocks\estockmarketstock\service\NextSequenceService.class
