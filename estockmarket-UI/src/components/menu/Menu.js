@@ -14,7 +14,7 @@ const Menu = () => {
                     <Nav className="me-auto">
                         <NavDropdown title="Company" id="company-nav-dropdown">
                             <NavDropdown.Item href="/company">View Company List</NavDropdown.Item>
-                            <NavDropdown.Item href="/company/add">Add Company</NavDropdown.Item>
+                            <NavDropdown.Item href="/company/register">Register Company</NavDropdown.Item>
                         </NavDropdown>
                         <NavDropdown title="Stock" id="stock-nav-dropdown">
                             <NavDropdown.Item href="/stock">View Stock List</NavDropdown.Item>

@@ -8,7 +8,6 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 export default class CompanyList extends Component {
     constructor(props) {
         super(props);
-        this.deleteCompany = this.deleteCompany.bind(this);
         this.state =
         {
             companies: [],
@@ -34,10 +33,6 @@ export default class CompanyList extends Component {
             {
                 dataField: 'stockExchange',
                 text: 'Stock Exchange'
-            },
-            {
-                dataField: 'latestStockPrice',
-                text: 'Latest Stock Price'
             },
             {
                 dataField: 'button',
@@ -78,7 +73,7 @@ export default class CompanyList extends Component {
         }
     }
 
-    deleteCompany(companyCode) {
+    deleteCompany = (companyCode) => {
         console.log(companyCode)
         this.setState({
             spinner: true

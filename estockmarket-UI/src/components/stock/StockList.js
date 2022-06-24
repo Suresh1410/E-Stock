@@ -15,10 +15,6 @@ import "./StockStyles.css";
 export default class StockList extends Component {
     constructor(props) {
         super(props);
-        this.handleSelect = this.handleSelect.bind(this);
-        this.onStartDateChange = this.onStartDateChange.bind(this);
-        this.onEndDateChange = this.onEndDateChange.bind(this);
-        this.getStocks = this.getStocks.bind(this);
         this.state =
         {
             companies: [],
@@ -56,7 +52,7 @@ export default class StockList extends Component {
             });
     };
 
-    getStocks() {
+    getStocks = () => {
         this.setState({
             spinner: true
         });
@@ -87,7 +83,7 @@ export default class StockList extends Component {
             });
     };
 
-    handleSelect(e) {
+    handleSelect = (e) => {
         let cCode = e.split(",,,,,,")[0];
         let cName = e.split(",,,,,,")[1];
         this.setState({
@@ -96,13 +92,13 @@ export default class StockList extends Component {
         });
     }
 
-    onStartDateChange(e) {
+    onStartDateChange = (e) => {
         this.setState({
             startDate: e
         });
     }
 
-    onEndDateChange(e) {
+    onEndDateChange  = (e) => {
         this.setState({
             endDate: e
         });

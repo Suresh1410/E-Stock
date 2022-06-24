@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Menu from "./components/menu/Menu";
 import Home from "./components/home/Home";
-import AddCompany from "./components/company/AddCompany";
+import RegisterCompany from "./components/company/RegisterCompany";
 import CompanyList from "./components/company/CompanyList";
 import AddStock from "./components/stock/AddStock";
 import StockList from "./components/stock/StockList";
@@ -16,7 +16,7 @@ function App() {
         {<Switch>
           <Route path="/" exact component={Home} />
           <Route path="/company" exact component={CompanyList} />
-          <Route path="/company/add" exact component={AddCompany} />
+          <Route path="/company/register" exact component={RegisterCompany} />
           <Route path="/stock" exact component={StockList} />
           <Route path="/stock/add" exact component={AddStock} />
         </Switch>}

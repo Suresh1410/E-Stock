@@ -7,9 +7,6 @@ import Dropdown from 'react-bootstrap/Dropdown'
 export default class AddStock extends Component {
     constructor(props) {
         super(props);
-        this.onChangePrice = this.onChangePrice.bind(this);
-        this.handleSelect = this.handleSelect.bind(this);
-        this.addStock = this.addStock.bind(this);
 
         this.state = {
             companyCode: "",
@@ -21,20 +18,10 @@ export default class AddStock extends Component {
         };
     }
 
-    onChangePrice(e) {
-        var regExp = new RegExp(/^\d*\.?\d*$/);
-
-        if (e.target.value === '' || regExp.test(e.target.value)) {
-            this.setState({
-                stockPrice: e.target.value
-            });
-        }
-    }
-
     componentDidMount() {
         CompanyService.getAllCompany()
             .then(response => {
-                if (response && response.data ) {
+                if (response && response.data) {
                     this.setState({
                         companies: response.data
                     });
@@ -45,7 +32,25 @@ export default class AddStock extends Component {
             });
     }
 
-    handleSelect(e) {
+    handleChange = (event) => {
+        const { name, value } = event.target;
+
+        switch (name) {
+            case "stockPrice":
+                var regExp = new RegExp(/^\d*\.?\d*$/);
+
+                if (value === '' || regExp.test(value)) {
+                    this.setState({
+                        stockPrice: value
+                    });
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    handleSelect = (e) => {
         let cCode = e.split(",,,,,,")[0];
         let cName = e.split(",,,,,,")[1];
         this.setState({
@@ -54,7 +59,7 @@ export default class AddStock extends Component {
         });
     }
 
-    addStock(e) {
+    addStock = (e) => {
         e.preventDefault();
         if (this.state.companyCode && this.state.stockPrice) {
 
@@ -132,7 +137,7 @@ export default class AddStock extends Component {
                             id="stockPrice"
                             required
                             value={this.state.stockPrice}
-                            onChange={this.onChangePrice}
+                            onChange={this.handleChange}
                             name="stockPrice"
                         />
                     </div>

@@ -1,17 +1,9 @@
 import React, { Component } from "react";
 import CompanyService from '../../services/company/company.service.js';
 
-export default class AddCompany extends Component {
+export default class RegisterCompany extends Component {
     constructor(props) {
         super(props);
-        this.onChangeCode = this.onChangeCode.bind(this);
-        this.onChangeName = this.onChangeName.bind(this);
-        this.onChangeCeoName = this.onChangeCeoName.bind(this);
-        this.onChangeTurnOver = this.onChangeTurnOver.bind(this);
-        this.onChangeWebsite = this.onChangeWebsite.bind(this);
-        this.onChangeStockExchange = this.onChangeStockExchange.bind(this);
-        this.handleValidation = this.handleValidation.bind(this);
-        this.addCompany = this.addCompany.bind(this);
 
         this.state = {
             code: "",
@@ -28,51 +20,53 @@ export default class AddCompany extends Component {
         };
     }
 
-    onChangeCode(e) {
-        var regExp = new RegExp(/[^0-9a-zA-Z]/);
+    handleChange = (event) => {
+        const { name, value } = event.target;
 
-        if (e.target.value === '' || !regExp.test(e.target.value)) {
-            this.setState({
-                code: e.target.value
-            });
+        switch (name) {
+            case "companyCode":
+                var regExpCode = new RegExp(/[^0-9a-zA-Z]/);
+                if (value === '' || !regExpCode.test(value)) {
+                    this.setState({
+                        code: value
+                    });
+                }
+                break;
+            case "companyName":
+                this.setState({
+                    name: value
+                });
+                break;
+            case "ceoName":
+                this.setState({
+                    ceoName: value
+                });
+                break;
+            case "turnOver":
+                var regExp = new RegExp(/^\d*\.?\d*$/);
+
+                if (value === '' || regExp.test(value)) {
+                    this.setState({
+                        turnOver: value
+                    });
+                }
+                break;
+            case "website":
+                this.setState({
+                    website: value
+                });
+                break;
+            case "stockExchange":
+                this.setState({
+                    stockExchange: value
+                });
+                break;
+            default:
+                break;
         }
     }
 
-    onChangeName(e) {
-        this.setState({
-            name: e.target.value
-        });
-    }
-
-    onChangeCeoName(e) {
-        this.setState({
-            ceoName: e.target.value
-        });
-    }
-
-    onChangeTurnOver(e) {
-        var regExp = new RegExp(/^\d*\.?\d*$/);
-
-        if (e.target.value === '' || regExp.test(e.target.value)) {
-            this.setState({
-                turnOver: e.target.value
-            });
-        }
-    }
-
-    onChangeWebsite(e) {
-        this.setState({
-            website: e.target.value
-        });
-    }
-
-    onChangeStockExchange(e) {
-        this.setState({
-            stockExchange: e.target.value
-        });
-    }
-
-    handleValidation() {
+    handleValidation = () =>{
         let errors = {};
         let formIsValid = true;
 
@@ -94,8 +88,8 @@ export default class AddCompany extends Component {
         return formIsValid;
     }
 
-    addCompany(e) {
-        e.preventDefault();
+    addCompany = (event) => {
+        event.preventDefault();
         if (this.handleValidation()) {
 
             var data = {
@@ -104,8 +98,8 @@ export default class AddCompany extends Component {
                 companyCeo: this.state.ceoName,
                 companyTurnover: parseFloat(this.state.turnOver),
                 companyWebsite: this.state.website,
-                stockExchange : this.state.stockExchange,
-                errorMessage:""
+                stockExchange: this.state.stockExchange,
+                errorMessage: ""
             };
 
             CompanyService.addCompany(data)
@@ -123,12 +117,12 @@ export default class AddCompany extends Component {
                 })
                 .catch(e => {
                     console.log(e);
-                    if(e && e.response && e.response.status == 400){
+                    if (e && e.response && e.response.status == 400) {
                         this.setState({
                             websiteError: true
-                        }); 
+                        });
                     }
-                   else if (e && e.response && e.response.data && e.response.data.indexOf("Resource with specified id or name already exists.")) {
+                    else if (e && e.response && e.response.data && e.response.data.indexOf("Resource with specified id or name already exists.")) {
                         this.setState({
                             compCodeError: true
                         });
@@ -137,7 +131,7 @@ export default class AddCompany extends Component {
                         this.setState({
                             error: true
                         });
-                    }                    
+                    }
                 });
         }
     }
@@ -151,13 +145,13 @@ export default class AddCompany extends Component {
                 ) : this.state.compCodeError ? (
                     <label style={{ color: "red" }}>Company Code already exists. Please give unique Company Code!</label>
                 ) :
-                this.state.websiteError ? (
-                    <label style={{ color: "red" }}>Please provide valid website!</label>
-                ): this.state.error ? (
-                    <label style={{ color: "red" }}>Error Occured!</label>
-                ) : (
-                    <label ></label>
-                )}
+                    this.state.websiteError ? (
+                        <label style={{ color: "red" }}>Please provide valid website!</label>
+                    ) : this.state.error ? (
+                        <label style={{ color: "red" }}>Error Occured!</label>
+                    ) : (
+                        <label ></label>
+                    )}
                 <div>
                     <div className="form-group">
                         <label htmlFor="companyCode">Company Code</label>
@@ -167,7 +161,7 @@ export default class AddCompany extends Component {
                             id="companyCode"
                             required
                             value={this.state.code}
-                            onChange={this.onChangeCode}
+                            onChange={this.handleChange}
                             name="companyCode"
                         />
                         <span style={{ color: "red" }}>{this.state.errors["code"]}</span>
@@ -180,7 +174,7 @@ export default class AddCompany extends Component {
                             id="companyName"
                             required
                             value={this.state.name}
-                            onChange={this.onChangeName}
+                            onChange={this.handleChange}
                             name="companyName"
                         />
                     </div>
@@ -192,7 +186,7 @@ export default class AddCompany extends Component {
                             id="ceoName"
                             required
                             value={this.state.ceoName}
-                            onChange={this.onChangeCeoName}
+                            onChange={this.handleChange}
                             name="ceoName"
                         />
                     </div>
@@ -204,7 +198,7 @@ export default class AddCompany extends Component {
                             id="turnOver"
                             required
                             value={this.state.turnOver}
-                            onChange={this.onChangeTurnOver}
+                            onChange={this.handleChange}
                             name="turnOver"
                         />
                         <span style={{ color: "red" }}>{this.state.errors["turnOver"]}</span>
@@ -217,7 +211,7 @@ export default class AddCompany extends Component {
                             id="website"
                             required
                             value={this.state.website}
-                            onChange={this.onChangeWebsite}
+                            onChange={this.handleChange}
                             name="website"
                         />
                         <span style={{ color: "red" }}>{this.state.errors["website"]}</span>
@@ -230,7 +224,7 @@ export default class AddCompany extends Component {
                             id="stockExchange"
                             required
                             value={this.state.stockExchange}
-                            onChange={this.onChangeStockExchange}
+                            onChange={this.handleChange}
                             name="stockExchange"
                         />
                     </div>
