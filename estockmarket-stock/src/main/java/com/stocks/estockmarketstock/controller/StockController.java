@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.estockmarket.stocks.document.Stock;
 import com.estockmarket.stocks.document.StockDetails;
 import com.estockmarket.stocks.dto.StockDto;
 import com.estockmarket.utils.Constants;
@@ -36,6 +38,14 @@ public class StockController {
 	
 	@Autowired
 	StockDetailsService stockDetailsService;
+	
+	@ApiOperation(value="Add Stock details based on company code",response=ResponseEntity.class)
+	@ApiResponse(code=200,message="successful",response=ResponseEntity.class)
+	@PostMapping(value = "/add/{companyCode}")
+	public ResponseEntity<String> addCompanyNewStock(@PathVariable Integer companyCode, @RequestBody Stock newStock) {
+		stockService.addCompanyNewStock(companyCode, newStock);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ApiOperation(value="Get Stock details based on company code",response=ResponseEntity.class)

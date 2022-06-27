@@ -12,4 +12,5 @@ import com.estockmarket.stocks.document.StockDetails;
 public interface StockDetailsRepository extends MongoRepository<StockDetails, Integer>{
 
 	List<StockDetails> findByStockPriceDttm(Integer companyCode, Date startDate, Date endDate);
+	
 }

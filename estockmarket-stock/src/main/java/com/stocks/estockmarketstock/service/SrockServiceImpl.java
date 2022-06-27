@@ -37,43 +37,13 @@ public class SrockServiceImpl implements StockService {
 	@Autowired
 	NextSequenceService nextSequenceService;
 	
-	@SuppressWarnings("unused")
 	@Override
-	public StockDto createStock(Integer companyCode, StockDetails stockDetail) {
-		StringBuilder sb=new StringBuilder(companyUrl);
-		sb.append(companyCode);
-		ResponseEntity<CompanyDto> respEntity=restTemplate.getForEntity(sb.toString(), CompanyDto.class);
-		CompanyDto companyDto=respEntity.getBody();
-		StockDto stockDto=new StockDto();
-		if(companyDto.getCompanyCode() != null) {
-			Stock stock=stockRepository.findByCompanyCodeAndId(companyCode,companyCode);
-			if(stock != null) {
-				stock.setId(companyCode);
-				StockDetails stockDetails =new StockDetails();
-				stockDetails.setStockPrice(stockDetail.getStockPrice());
-				stockDetails.setStockPriceDttm(new Date());
-				stock.getStockDetails().add(stockDetails);
-				stockRepository.save(stock);
-			BeanUtils.copyProperties(stock, stockDto);
-			}else {
-				Stock stockNew=new Stock();
-				stockNew.setId(nextSequenceService.getNextSequence("customSequences"));
-				stockNew.setCompanyCode(companyCode);
-				List<StockDetails> stockDetailsListNew=new ArrayList<>();
-				StockDetails stockDetailsNew = new StockDetails();
-				stockDetailsNew.setStockPrice(stockDetail.getStockPrice());
-				stockDetailsNew.setStockPriceDttm(new Date());
-				stockDetailsListNew.add(stockDetailsNew);
-				stockNew.setStockDetails(stockDetailsListNew);
-				stockRepository.save(stockNew);
-				BeanUtils.copyProperties(stockNew, stockDto);
-			}
-		}
-		else {
-			stockDto.setErrorMessage(Constants.COMPANY_NOT_FOUND);
-		}
-		return stockDto;
+	public String addCompanyNewStock(Integer companyCode, Stock stock) {
+		stock.setCompanyCode(companyCode);
+	    stockRepository.save(stock);
+		return null;
 	}
+
 
 	@Override
 	public StockDto getStock(Integer companyCode) {
@@ -114,5 +84,6 @@ public class SrockServiceImpl implements StockService {
 	public void deleteAllCustomSequence() {
 		customSequencesRepo.deleteAll();
 	}
+
 
 }

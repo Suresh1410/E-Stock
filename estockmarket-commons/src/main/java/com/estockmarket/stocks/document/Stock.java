@@ -11,6 +11,13 @@ public class Stock {
 	@Id
 	private Integer id;
 	private Integer companyCode;
+	private Double price;
+	public Double getPrice() {
+		return price;
+	}
+	public void setPrice(Double price) {
+		this.price = price;
+	}
 	private List<StockDetails> stockDetails;
 
 	public Integer getId() {
