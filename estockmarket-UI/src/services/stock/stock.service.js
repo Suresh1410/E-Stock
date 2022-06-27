@@ -7,12 +7,12 @@ class StockService {
     let startDate = Moment(sDate).format('YYYY-MM-DD');
     let endDate = Moment(eDate).format('YYYY-MM-DD');
 
-    let data = service.get('stock/get/' + cCode + '/' + startDate + '/' + endDate);
+    let data = service.post('stock/get/' + cCode + '/' + startDate + '/' + endDate);
     return data;
   }
 
-  addStock(data) {
-    return service.post("stock/add", data);
+  addStock(data,companyCode) {
+    return service.post("stock/add/"+companyCode, data);
   }
 }
 

@@ -65,10 +65,11 @@ export default class AddStock extends Component {
 
             var data = {
                 companyCode: this.state.companyCode,
-                stockPrice: parseFloat(this.state.stockPrice)
+                price: parseFloat(this.state.stockPrice),
+                stockPriceDttm: new Date()
             };
 
-            StockService.addStock(data)
+            StockService.addStock(data,this.state.companyCode)
                 .then(response => {
                     this.setState({
                         companyCode: "",

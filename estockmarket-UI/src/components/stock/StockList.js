@@ -11,6 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner'
 import "./StockStyles.css";
+import {convertDateToUTC} from '../util/function' 
 
 export default class StockList extends Component {
     constructor(props) {
@@ -56,15 +57,17 @@ export default class StockList extends Component {
         this.setState({
             spinner: true
         });
-        StockService.getStocks(this.state.code, this.state.startDate, this.state.endDate)
+        StockService.getStocks(this.state.code, 
+            this.state.startDate,
+            this.state.endDate)
             .then(response => {
-                if (response && response.data && response.data.stocks) {
+                if (response && response.data) {
                     this.setState({
-                        stocks: response.data.stocks,
+                        stocks: response.data.stockData,
                         minPrice: response.data.minPrice,
                         maxPrice: response.data.maxPrice,
                         avgPrice: response.data.avgPrice,
-                        noStocks: response.data.stocks.length > 0 ? false : true,
+                        noStocks: response.data.stockData.length > 0 ? false : true,
                         spinner: false
                     });
                 }
@@ -161,9 +164,9 @@ export default class StockList extends Component {
                             <Col sm>Time</Col>
                         </Row>
                         {this.state.stocks.map(item => (
-                            <Row key={item.stockPrice}>
-                                <Col lg>{item.stockPrice}</Col>
-                                <Col lg>{item.stockDate}</Col>
+                            <Row key={item.price}>
+                                <Col lg>{item.price}</Col>
+                                <Col lg>{item.stockPriceDttm}</Col>
                                 <Col lg>{item.stockTime}</Col>
                             </Row>
                         ))
