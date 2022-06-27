@@ -46,13 +46,9 @@ public class SrockServiceImpl implements StockService {
 
 
 	@Override
-	public StockDto getStock(Integer companyCode) {
-		StockDto stockDto=new StockDto();
+	public Stock getStock(Integer companyCode) {
 		Stock stock=stockRepository.findByCompanyCode(companyCode);
-		if(stock != null) {
-			BeanUtils.copyProperties(stock, stockDto);
-		}
-		return stockDto;
+		return stock;
 	}
 
 	@Override

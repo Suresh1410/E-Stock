@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.estockmarket.stocks.document.Stock;
 import com.estockmarket.stocks.document.StockDetails;
 import com.estockmarket.stocks.dto.StockDto;
-import com.estockmarket.utils.Constants;
 import com.stocks.estockmarketstock.service.StockDetailsService;
 import com.stocks.estockmarketstock.service.StockService;
 
@@ -50,9 +50,10 @@ public class StockController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ApiOperation(value="Get Stock details based on company code",response=ResponseEntity.class)
 	@ApiResponse(code=200,message="successful",response=ResponseEntity.class)
-	@PostMapping("get/{companycode}/{startdate}/{enddate}")
+	@PostMapping("get/{companyCode}/{startDate}/{endDate}")
 	public ResponseEntity<StockDetails> getStockByDate(@PathVariable("companyCode") Integer companyCode, 
-			@PathVariable("companyCode") Date startDate, @PathVariable("companyCode") Date endDate) {
+			@PathVariable(name = "startDate") @DateTimeFormat(pattern = "yyyy-M-dd") Date startDate,
+			@PathVariable(name = "endDate") @DateTimeFormat(pattern = "yyyy-M-dd") Date endDate) {
 		ResponseEntity response=null;
 		if(companyCode != null || companyCode > 0) {
 			List<StockDetails> stockDetails=stockDetailsService.findByStockPriceDttm(companyCode, startDate, endDate);
@@ -61,34 +62,31 @@ public class StockController {
 	  return response;
 	}
 	
+	// @DateTimeFormat(pattern = "dd-M-yyyy hh:mm:ss") Date begin,
+    
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping("/get/{companyCode}")
-	public ResponseEntity<StockDto> getStock(@PathVariable("companyCode") Integer companyCode) {
+	public ResponseEntity<Stock> getStock(@PathVariable("companyCode") Integer companyCode) {
 		ResponseEntity response=null;
 		if(companyCode != null || companyCode > 0) {
-			StockDto stockDto=stockService.getStock(companyCode);
+			Stock stockDto=stockService.getStock(companyCode);
 			response=new ResponseEntity(stockDto,HttpStatus.OK);
 		}
 	  return response;
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@GetMapping("/delete/{companyCode}")
-	public ResponseEntity<String> deleteStock(@PathVariable("companyCode") Integer companyCode){
-		ResponseEntity response=null;
-		try {
-		StockDto stock=stockService.getStock(companyCode);
-		if(stock.getId() != null) {
-			stockService.deleteStock(stock);
-			response=new ResponseEntity(Constants.SUCCESS, HttpStatus.OK);
-		}else {
-			response=new ResponseEntity(Constants.STOCK_NOT_FOUND, HttpStatus.OK);
-		}
-		}catch(Exception e) {
-			response=new ResponseEntity(Constants.FAILED, HttpStatus.OK);
-		}
-		return response;
-	}
+	/*
+	 * @SuppressWarnings({ "rawtypes", "unchecked" })
+	 * 
+	 * @GetMapping("/delete/{companyCode}") public ResponseEntity<String>
+	 * deleteStock(@PathVariable("companyCode") Integer companyCode){ ResponseEntity
+	 * response=null; try { Stock stock=stockService.getStock(companyCode);
+	 * if(stock.getId() != null) { stockService.deleteStock(stock); response=new
+	 * ResponseEntity(Constants.SUCCESS, HttpStatus.OK); }else { response=new
+	 * ResponseEntity(Constants.STOCK_NOT_FOUND, HttpStatus.OK); } }catch(Exception
+	 * e) { response=new ResponseEntity(Constants.FAILED, HttpStatus.OK); } return
+	 * response; }
+	 */
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/getAll")

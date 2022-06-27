@@ -27,9 +27,8 @@ public class EstockmarketStockApplication {
 		return new RestTemplate();
 	}
 	
-	@Bean
-	public void clearDB() {
-		stockService.deleteAllStocks();
-		stockService.deleteAllCustomSequence();
-	}
+	/*
+	 * @Bean public void clearDB() { stockService.deleteAllStocks();
+	 * stockService.deleteAllCustomSequence(); }
+	 */
 }

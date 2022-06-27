@@ -3,14 +3,18 @@ package com.estockmarket.stocks.document;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class StockDetails {
 	private Double stockPrice;
 	private Date stockPriceDttm;
 	
-	private List<Stock> stockData;
 	private Double minPrice;
 	private Double maxPrice;
 	private Double avgPrice;
+	
+	private List<Stock> stockData;
 	
 	public List<Stock> getStockData() {
 		return stockData;

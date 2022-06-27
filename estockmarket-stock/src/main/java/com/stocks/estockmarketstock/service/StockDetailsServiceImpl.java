@@ -32,8 +32,8 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 	@Override
 	public List<StockDetails> findByStockPriceDttm(Integer companyCode, Date startDate, Date endDate) {
 			StockDetails stockdetails = new StockDetails();
-			Criteria criteria = Criteria.where("addedTime").gte(startDate)
-					.andOperator(Criteria.where("addedTime").lte(endDate));
+			Criteria criteria = Criteria.where("stockPriceDttm").gte(startDate)
+					.andOperator(Criteria.where("stockPriceDttm").lte(endDate));
 			criteria = criteria.and("companyCode").is(companyCode);
 			Query query = new Query(criteria);
 			List<Stock> stockList = mongotemplate.find(query, Stock.class);
