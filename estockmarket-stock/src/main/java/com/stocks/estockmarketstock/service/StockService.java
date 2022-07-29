@@ -7,11 +7,11 @@ import com.estockmarket.stocks.dto.StockDto;
 
 public interface StockService {
 
-	Stock getStock(Integer companyCode);
+	List<Stock> getStock(Integer companyCode);
 
-	void deleteStock(StockDto stock);
+	void deleteStock(Stock stock);
 
-	List<StockDto> getAllStock();
+	List<Stock> getAllStock();
 
 	void deleteAllStocks();
 	

@@ -31,8 +31,4 @@ public class EstockmarketCompanyApplication {
 		return new RestTemplate();
 	}
 	
-	@Bean
-	public void clearDB() {
-		companyService.deleteAllCompany();
-	}
 }
