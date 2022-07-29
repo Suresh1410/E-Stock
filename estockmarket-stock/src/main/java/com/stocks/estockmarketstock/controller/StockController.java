@@ -83,6 +83,7 @@ public class StockController {
 	public ResponseEntity<String> deleteStock(@PathVariable("companyCode") Integer companyCode) {
 		ResponseEntity response = null;
 		try {
+			
 			Stock stock = stockService.getStock(companyCode);
 			if (stock.getId() != null) {
 				stockService.deleteStock(stock);
