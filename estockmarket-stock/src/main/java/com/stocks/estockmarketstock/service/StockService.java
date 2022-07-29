@@ -9,7 +9,7 @@ public interface StockService {
 
 	Stock getStock(Integer companyCode);
 
-	void deleteStock(StockDto stock);
+	void deleteStock(Stock stock);
 
 	List<StockDto> getAllStock();
 

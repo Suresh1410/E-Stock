@@ -20,7 +20,7 @@ import com.stocks.estockmarketstock.repository.CustomSequencesRepo;
 import com.stocks.estockmarketstock.repository.StockRepository;
 
 @Service
-public class SrockServiceImpl implements StockService {
+public class StockServiceImpl implements StockService {
 
 	@Autowired
 	StockRepository stockRepository;
@@ -31,8 +31,6 @@ public class SrockServiceImpl implements StockService {
 	@Autowired
 	RestTemplate restTemplate;
 	
-	@Value("${company.url}")
-	private String companyUrl;
 	
 	@Autowired
 	NextSequenceService nextSequenceService;
@@ -52,7 +50,7 @@ public class SrockServiceImpl implements StockService {
 	}
 
 	@Override
-	public void deleteStock(StockDto stock) {
+	public void deleteStock(Stock stock) {
 		stockRepository.deleteById(stock.getId());
 	}
 
