@@ -1,21 +1,15 @@
 package com.stocks.estockmarketstock.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.estockmarket.company.dto.CompanyDto;
 import com.estockmarket.stocks.document.Stock;
-import com.estockmarket.stocks.document.StockDetails;
 import com.estockmarket.stocks.dto.StockDto;
-import com.estockmarket.utils.Constants;
 import com.stocks.estockmarketstock.repository.CustomSequencesRepo;
 import com.stocks.estockmarketstock.repository.StockRepository;
 
@@ -44,9 +38,9 @@ public class StockServiceImpl implements StockService {
 
 
 	@Override
-	public Stock getStock(Integer companyCode) {
-		Stock stock=stockRepository.findByCompanyCode(companyCode);
-		return stock;
+	public List<Stock> getStock(Integer companyCode) {
+		List<Stock> stocks=stockRepository.findByCompanyCode(companyCode);
+		return stocks;
 	}
 
 	@Override
@@ -55,18 +49,10 @@ public class StockServiceImpl implements StockService {
 	}
 
 	@Override
-	public List<StockDto> getAllStock() {
-		List<Stock> stockList=stockRepository.findAll();
-		List<StockDto> stockDtoList=new ArrayList<StockDto>();
-		if(!stockList.isEmpty()) {
-			stockList.stream().forEach(s -> {
-				StockDto stockDto=new StockDto();
-				BeanUtils.copyProperties(s, stockDto);
-				stockDtoList.add(stockDto);
-			});
-		}
+	public List<Stock> getAllStock() {
+		List<Stock> stockList=stockRepository.findAll();	
 	
-		return stockDtoList;
+		return stockList;
 	}
 
 	@Override

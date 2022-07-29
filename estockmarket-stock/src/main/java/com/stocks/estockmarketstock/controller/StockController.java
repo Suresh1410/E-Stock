@@ -10,7 +10,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.estockmarket.stocks.document.Stock;
 import com.estockmarket.stocks.document.StockDetails;
-import com.estockmarket.stocks.dto.StockDto;
 import com.estockmarket.utils.Constants;
 import com.stocks.estockmarketstock.service.StockDetailsService;
 import com.stocks.estockmarketstock.service.StockService;
@@ -70,27 +68,33 @@ public class StockController {
 	@PostMapping("/get/{companyCode}")
 	public ResponseEntity<Stock> getStock(@PathVariable("companyCode") Integer companyCode) {
 		ResponseEntity response = null;
+		List<Stock> stocks;
 		if (companyCode != null || companyCode > 0) {
-			Stock stockDto = stockService.getStock(companyCode);
-			response = new ResponseEntity(stockDto, HttpStatus.OK);
+			stocks = stockService.getStock(companyCode);
+			response = new ResponseEntity(stocks, HttpStatus.OK);
 		}
 		return response;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 
-	@DeleteMapping("/delete/{companyCode}")
+	@GetMapping("/delete/{companyCode}")
 	public ResponseEntity<String> deleteStock(@PathVariable("companyCode") Integer companyCode) {
 		ResponseEntity response = null;
-		try {
-			
-			Stock stock = stockService.getStock(companyCode);
-			if (stock.getId() != null) {
-				stockService.deleteStock(stock);
-				response = new ResponseEntity(Constants.SUCCESS, HttpStatus.OK);
-			} else {
-				response = new ResponseEntity(Constants.STOCK_NOT_FOUND, HttpStatus.OK);
+		List<Stock> stocks;
+		try {	
+			stocks = stockService.getStock(companyCode);
+			if(stocks.size()>0) {
+				for (Stock stock : stocks) {
+					if (stock.getId() != null) {
+						stockService.deleteStock(stock);
+						response = new ResponseEntity(Constants.SUCCESS, HttpStatus.OK);
+					} else {
+						response = new ResponseEntity(Constants.STOCK_NOT_FOUND, HttpStatus.OK);
+					}
+				}
 			}
+			
 		} catch (Exception e) {
 			response = new ResponseEntity(Constants.FAILED, HttpStatus.OK);
 		}
@@ -99,8 +103,8 @@ public class StockController {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/getAll")
-	public ResponseEntity<StockDto> getAllStock() {
-		List<StockDto> stockDto = stockService.getAllStock();
+	public ResponseEntity<Stock> getAllStock() {
+		List<Stock> stockDto = stockService.getAllStock();
 		ResponseEntity response = new ResponseEntity(stockDto, HttpStatus.OK);
 		return response;
 	}
