@@ -62,15 +62,17 @@ export default class StockList extends Component {
             this.state.endDate)
             .then(response => {
                 if (response && response.data) {
-                    this.setState({
-                        stocks: response.data.stockData,
-                        minPrice: response.data.minPrice,
-                        maxPrice: response.data.maxPrice,
-                        avgPrice: response.data.avgPrice,
-                        noStocks: response.data.stockData.length > 0 ? false : true,
-                        spinner: false
-                    });
-                }
+                    if(response.data.length > 0){
+                        this.setState({
+                            stocks: response.data[0].stockData,
+                            minPrice: response.data[0].minPrice,
+                            maxPrice: response.data[0].maxPrice,
+                            avgPrice: response.data[0].avgPrice,
+                            noStocks: response.data[0].stockData.length > 0 ? false : true,
+                            spinner: false
+                        });
+                    }
+                                   }
                 else {
                     this.setState({
                         noStocks: true,
@@ -166,8 +168,8 @@ export default class StockList extends Component {
                         {this.state.stocks.map(item => (
                             <Row key={item.price}>
                                 <Col lg>{item.price}</Col>
-                                <Col lg>{item.stockPriceDttm}</Col>
-                                <Col lg>{item.stockTime}</Col>
+                                <Col lg>{item.stockPriceDttm.substring(0,10)}</Col>
+                                <Col lg>{item.stockPriceDttm.substring(11)}</Col>
                             </Row>
                         ))
                         }
