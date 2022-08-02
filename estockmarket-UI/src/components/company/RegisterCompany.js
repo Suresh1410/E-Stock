@@ -16,7 +16,8 @@ export default class RegisterCompany extends Component {
             errors: "",
             error: false,
             compCodeError: false,
-            websiteError: false
+            websiteError: false,
+            companies: []
         };
     }
 
@@ -66,16 +67,39 @@ export default class RegisterCompany extends Component {
         }
     }
 
-    handleValidation = () =>{
+    getAllCompany = () => {
+        CompanyService.getAllCompany()
+            .then(response => {
+                if (response && response.data) {
+                    this.setState({
+                        companies: response.data
+                    });
+                }
+            })
+            .catch(e => {
+                console.log(e);
+                this.setState({
+                    spinner: false
+                });
+            });
+    }
+
+    handleValidation = () => {
         let errors = {};
         let formIsValid = true;
-
         if (typeof this.state.code !== "undefined") {
             if (this.state.code.match(/[^0-9a-zA-Z]/)) {
                 formIsValid = false;
                 errors["code"] = "Only Alphanumeric";
             }
+            let company = this.state.companies.filter(company => company.companyCode == this.state.code)
+            if (company.length > 0) {
+                formIsValid = false;
+                errors["code"] = "Company Code already exists";
+            }
         }
+
+
 
         if (typeof this.state.turnOver !== "undefined") {
             if (parseFloat(this.state.turnOver) < 100000000) {
@@ -90,6 +114,7 @@ export default class RegisterCompany extends Component {
 
     addCompany = (event) => {
         event.preventDefault();
+        this.getAllCompany();
         if (this.handleValidation()) {
 
             var data = {

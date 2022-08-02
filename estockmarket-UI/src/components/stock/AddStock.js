@@ -3,6 +3,7 @@ import StockService from '../../services/stock/stock.service.js';
 import CompanyService from '../../services/company/company.service.js';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown'
+import {randomNumber} from '../util/function'
 
 export default class AddStock extends Component {
     constructor(props) {
@@ -66,19 +67,28 @@ export default class AddStock extends Component {
             var data = {
                 companyCode: this.state.companyCode,
                 price: parseFloat(this.state.stockPrice),
-                stockPriceDttm: new Date()
+                stockPriceDttm: new Date(),
+                id:randomNumber(1,100000)
             };
 
             StockService.addStock(data,this.state.companyCode)
                 .then(response => {
-                    this.setState({
-                        companyCode: "",
-                        companyName: "",
-                        stockPrice: "",
-                        submitted: true,
-                        allfieldsRequired: false
-                    });
-                    console.log(response.data);
+                    if(response.data.status===500){
+                        this.setState({
+                            allfieldsRequired: false,
+                            error: true
+                        });
+                    }else{
+                        this.setState({
+                            companyCode: "",
+                            companyName: "",
+                            stockPrice: "",
+                            submitted: true,
+                            allfieldsRequired: false
+                        });
+                        console.log(response.data);
+                    }
+                   
                 })
                 .catch(e => {
                     this.setState({
